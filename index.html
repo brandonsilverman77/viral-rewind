@@ -253,16 +253,84 @@
       font-weight: 500;
     }
 
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 24px;
+    .video-row-wrapper {
+      position: relative;
+    }
+
+    .video-row {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      padding-bottom: 8px;
+    }
+
+    .video-row::-webkit-scrollbar { display: none; }
+
+    .video-row .video-card {
+      flex: 0 0 340px;
+      min-width: 340px;
+    }
+
+    .scroll-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-60%);
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(18, 18, 26, 0.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--text);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scroll-arrow.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .scroll-arrow:hover {
+      background: var(--surface-hover);
+      border-color: #2a2a3e;
+      transform: translateY(-60%) scale(1.08);
+    }
+
+    .scroll-arrow.music-arrow:hover {
+      border-color: var(--music);
+      box-shadow: 0 0 16px var(--music-glow);
+    }
+
+    .scroll-arrow.funny-arrow:hover {
+      border-color: var(--funny);
+      box-shadow: 0 0 16px var(--funny-glow);
+    }
+
+    .scroll-arrow-left {
+      left: -12px;
+    }
+
+    .scroll-arrow-right {
+      right: -12px;
     }
 
     @media (max-width: 480px) {
-      .video-grid {
-        grid-template-columns: 1fr;
+      .video-row .video-card {
+        flex: 0 0 300px;
+        min-width: 300px;
       }
+      .scroll-arrow { display: none; }
     }
 
     /* ============ VIDEO CARD ============ */
@@ -487,7 +555,7 @@
       .hero { padding: 140px 20px 40px; }
       .hero p { font-size: 1rem; }
       .year-header h2 { font-size: 2.2rem; }
-      .video-grid { gap: 16px; }
+      .video-row { gap: 14px; }
       .card-info { padding: 12px 16px; }
       .timeline-inner { padding: 0 12px; }
       .year-btn { padding: 8px 12px; font-size: 0.85rem; }
@@ -548,62 +616,123 @@
       // 2016
       { title: "Sorry", artist: "Justin Bieber", year: 2016, videoId: "fRh_vgS2dFE", description: "The dance-crew music video and catchy hook made it one of the most-streamed songs of 2016." },
       { title: "Closer", artist: "The Chainsmokers ft. Halsey", year: 2016, videoId: "PT2_F-1esPk", description: "Spent 12 weeks at #1, becoming the defining EDM-pop crossover anthem of 2016." },
+      { title: "Work", artist: "Rihanna ft. Drake", year: 2016, videoId: "HL1UzIK-flA", description: "Rihanna and Drake's steamy collab hit #1 and racked up over 1.4 billion YouTube views." },
+      { title: "Panda", artist: "Desiigner", year: 2016, videoId: "E5ONTXHS2mM", description: "A SoundCloud phenomenon that hit #1, instantly becoming one of hip-hop's most quoted hooks." },
+      { title: "Cheap Thrills", artist: "Sia ft. Sean Paul", year: 2016, videoId: "nYh-n7EOtMA", description: "Topped charts in 20+ countries and became one of 2016's most-viewed videos globally." },
       // 2017
       { title: "Despacito", artist: "Luis Fonsi ft. Daddy Yankee", year: 2017, videoId: "kJQP7kiw5Fk", description: "First YouTube video to reach 5 billion views, igniting a global Latin music wave." },
       { title: "Shape of You", artist: "Ed Sheeran", year: 2017, videoId: "JGwWNGJdvx8", description: "Broke Spotify streaming records and became the inescapable pop earworm of 2017." },
+      { title: "HUMBLE.", artist: "Kendrick Lamar", year: 2017, videoId: "tvTRZJ-4EyI", description: "Its striking visuals helped Kendrick dominate 2017 and cross a billion YouTube views." },
+      { title: "Havana", artist: "Camila Cabello ft. Young Thug", year: 2017, videoId: "BQ0mxQXmLsk", description: "The catchy Latin-pop hit propelled Camila Cabello from Fifth Harmony breakout to solo superstar." },
+      { title: "Look What You Made Me Do", artist: "Taylor Swift", year: 2017, videoId: "3tmd-ClpJxA", description: "Its revenge-themed video broke YouTube's 24-hour record with 43 million views on day one." },
       // 2018
       { title: "This Is America", artist: "Childish Gambino", year: 2018, videoId: "VYOjWnS4cMY", description: "Symbolism-laden video sparked massive cultural debate about gun violence in America." },
       { title: "God's Plan", artist: "Drake", year: 2018, videoId: "xpVfcZ0ZcFM", description: "Drake gave away nearly $1 million in the video, making it a feel-good viral sensation." },
+      { title: "In My Feelings", artist: "Drake", year: 2018, videoId: "DRS_PpOrUZ4", description: "Sparked the massive 'Kiki Challenge' that had millions dancing alongside moving cars." },
+      { title: "Thank U, Next", artist: "Ariana Grande", year: 2018, videoId: "gl1aHhXnN1k", description: "Broke YouTube's record for biggest music video premiere with 55 million views in 24 hours." },
+      { title: "SAD!", artist: "XXXTENTACION", year: 2018, videoId: "pgN-vvVVxMA", description: "Posthumously hit #1 after the rapper's tragic death, fueling 1.5 billion YouTube views." },
       // 2019
       { title: "Old Town Road", artist: "Lil Nas X ft. Billy Ray Cyrus", year: 2019, videoId: "w2Ov5jzm3j8", description: "Broke the record for longest-running #1 hit at 19 weeks, fueled by TikTok virality." },
       { title: "Bad Guy", artist: "Billie Eilish", year: 2019, videoId: "DyDfgMOUjCI", description: "Made 17-year-old Billie Eilish a generational icon with its quirky, offbeat style." },
+      { title: "Señorita", artist: "Shawn Mendes & Camila Cabello", year: 2019, videoId: "Pkh8UtuejGw", description: "Their steamy collab dominated the summer and surpassed a billion YouTube views." },
+      { title: "7 Rings", artist: "Ariana Grande", year: 2019, videoId: "QYh6mYIJG2Y", description: "A flex anthem sampling 'My Favorite Things' that debuted at #1 and defined pop excess." },
+      { title: "Sunflower", artist: "Post Malone & Swae Lee", year: 2019, videoId: "ApXoWvfEYVU", description: "The Spider-Verse soundtrack hit crossed 2 billion views and became Post Malone's signature song." },
       // 2020
       { title: "Blinding Lights", artist: "The Weeknd", year: 2020, videoId: "4NRXx6U8ABQ", description: "Spawned a massive TikTok dance challenge and became the #1 Billboard Hot 100 song of all time." },
       { title: "WAP", artist: "Cardi B ft. Megan Thee Stallion", year: 2020, videoId: "hsm4poTWjMs", description: "Generated enormous cultural debate while dominating TikTok challenges and streaming charts." },
+      { title: "The Box", artist: "Roddy Ricch", year: 2020, videoId: "fHI8X4OXluQ", description: "Spent 11 weeks at #1 driven by TikTok's viral 'eee er' beat drop meme." },
+      { title: "Dynamite", artist: "BTS", year: 2020, videoId: "gdZLi9oWNZg", description: "BTS's first all-English hit broke YouTube's 24-hour premiere record with 101 million views." },
+      { title: "Rockstar", artist: "DaBaby ft. Roddy Ricch", year: 2020, videoId: "mxFstYSbBmc", description: "Spent 7 weeks at #1 and became a protest anthem after its Black Lives Matter remix." },
       // 2021
       { title: "MONTERO (Call Me By Your Name)", artist: "Lil Nas X", year: 2021, videoId: "6swmTBVI83k", description: "Its provocative video ignited a cultural firestorm while debuting at #1 on the Hot 100." },
       { title: "drivers license", artist: "Olivia Rodrigo", year: 2021, videoId: "ZmDBbnmKpqQ", description: "Broke Spotify's single-day streaming record, fueled by Disney+ love triangle speculation." },
+      { title: "Stay", artist: "The Kid LAROI & Justin Bieber", year: 2021, videoId: "kTJczUoc26U", description: "Hit #1 in over 30 countries and became the fastest music video to reach a billion views." },
+      { title: "INDUSTRY BABY", artist: "Lil Nas X ft. Jack Harlow", year: 2021, videoId: "UTHLKHL_whs", description: "Its audacious prison-break video sparked a cultural moment and debuted at #2." },
+      { title: "Easy On Me", artist: "Adele", year: 2021, videoId: "U3ASj1L6_sY", description: "Adele's long-awaited comeback shattered streaming records and dominated charts worldwide." },
       // 2022
       { title: "As It Was", artist: "Harry Styles", year: 2022, videoId: "H5v3kku4y6Q", description: "Spent 15 weeks at #1 and became the global #1 song of 2022." },
       { title: "Unholy", artist: "Sam Smith ft. Kim Petras", year: 2022, videoId: "Uq9gPaIzbe8", description: "Went massively viral on TikTok before release — Kim Petras became the first trans woman to hit #1." },
+      { title: "About Damn Time", artist: "Lizzo", year: 2022, videoId: "IXXxciRUMzE", description: "Lizzo's dance-inducing anthem spawned a viral TikTok challenge and hit #1 on the Hot 100." },
+      { title: "Anti-Hero", artist: "Taylor Swift", year: 2022, videoId: "b1kbLwvqugk", description: "Broke Spotify's single-day streaming record and spent 8 weeks at #1 on the Hot 100." },
+      { title: "Heat Waves", artist: "Glass Animals", year: 2022, videoId: "mRD0-GxqHVo", description: "After going viral on TikTok for two years, it finally hit #1 in 2022 in a historic slow burn." },
       // 2023
       { title: "Flowers", artist: "Miley Cyrus", year: 2023, videoId: "G7KNmW9a75Y", description: "Broke the Spotify single-week streaming record as a post-breakup empowerment anthem." },
       { title: "Kill Bill", artist: "SZA", year: 2023, videoId: "MSRcC626prw", description: "Dominated TikTok with its murderous revenge fantasy hook, propelling SZA to superstardom." },
+      { title: "Cruel Summer", artist: "Taylor Swift", year: 2023, videoId: "ic8j13piAhQ", description: "Originally from 2019, it finally hit #1 in 2023 after exploding on the Eras Tour and TikTok." },
+      { title: "vampire", artist: "Olivia Rodrigo", year: 2023, videoId: "RlPNh_PBZb4", description: "Debuted at #1 and proved Rodrigo's staying power with a gothic pop-rock anthem." },
+      { title: "Paint The Town Red", artist: "Doja Cat", year: 2023, videoId: "m4_9TFeMfJE", description: "Doja Cat reinvented herself with a devilish visual that spent two weeks at #1." },
       // 2024
       { title: "Espresso", artist: "Sabrina Carpenter", year: 2024, videoId: "eVli-tstM5E", description: "The inescapable song of summer 2024, catapulting Sabrina Carpenter to global pop stardom via TikTok." },
       { title: "Not Like Us", artist: "Kendrick Lamar", year: 2024, videoId: "H58vbez_m4E", description: "The knockout blow in the Kendrick vs. Drake beef dominated discourse and charts throughout 2024." },
+      { title: "Beautiful Things", artist: "Benson Boone", year: 2024, videoId: "Oa_RSwwpPaA", description: "A breakout viral hit approaching a billion views, making Benson Boone a household name." },
+      { title: "A Bar Song (Tipsy)", artist: "Shaboozey", year: 2024, videoId: "t7bQwwqW-Hc", description: "Tied 'Old Town Road' for the longest-running #1 in Hot 100 history at 19 weeks." },
+      { title: "TEXAS HOLD 'EM", artist: "Beyonce", year: 2024, videoId: "238Z4YaAr1g", description: "Beyonce's surprise country pivot broke the internet and debuted at #1 on Hot 100." },
       // 2025
       { title: "Die With a Smile", artist: "Lady Gaga & Bruno Mars", year: 2025, videoId: "kPa7bsKwL-c", description: "Topped YouTube's 2025 year-end list and hit 1 billion views in just 256 days." },
       { title: "APT.", artist: "ROSÉ & Bruno Mars", year: 2025, videoId: "ekr2nIex040", description: "Became the fastest K-pop video to reach 1 billion views, unseating Gangnam Style." },
+      { title: "Taste", artist: "Sabrina Carpenter", year: 2025, videoId: "KEG7b851Ric", description: "Jenna Ortega cameo drove massive buzz, cementing Carpenter's pop dominance into 2025." },
+      { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", year: 2025, videoId: "V9PVRfjEBTI", description: "Became Eilish's biggest streaming hit, dominating charts and TikTok into early 2025." },
+      { title: "Luther", artist: "Kendrick Lamar & SZA", year: 2025, videoId: "sNY_2TEmzho", description: "The GNX lead single reunited two icons and dominated every streaming platform." },
     ];
 
     const funnyVideos = [
       // 2016
-      { title: "Damn, Daniel", artist: "TheEllenShow", year: 2016, videoId: "_LUX70mXcEE", description: "A teen's repeated compliment of his friend's white Vans became an endlessly quotable catchphrase." },
-      { title: "Chewbacca Mom", artist: "Candace Payne", year: 2016, videoId: "y3yRv5Jg5TI", description: "A mom's uncontrollable laughter in a Chewbacca mask became the most-watched Facebook Live ever." },
-      { title: "We Are Number One", artist: "LazyTown / Stefán Karl", year: 2016, videoId: "PfYnvDL0Qcw", description: "Spawned thousands of remixes and became a beloved tribute meme for actor Stefán Karl Stefánsson." },
+    { title: "Damn, Daniel", artist: "TheEllenShow", year: 2016, videoId: "_LUX70mXcEE", description: "A teen's repeated compliment of his friend's white Vans became an endlessly quotable catchphrase." },
+    { title: "Chewbacca Mom", artist: "Candace Payne", year: 2016, videoId: "y3yRv5Jg5TI", description: "A mom's uncontrollable laughter in a Chewbacca mask became the most-watched Facebook Live ever." },
+    { title: "We Are Number One", artist: "LazyTown / Stefán Karl", year: 2016, videoId: "PfYnvDL0Qcw", description: "Spawned thousands of remixes and became a beloved tribute meme for actor Stefán Karl Stefánsson." },
+    { title: "PPAP (Pen Pineapple Apple Pen)", artist: "PIKOTARO", year: 2016, videoId: "Ct6BUPvE2sM", description: "A 45-second nonsense song endorsed by Justin Bieber that took over the entire internet overnight." },
+    { title: "Mannequin Challenge", artist: "Rae Sremmurd / Various", year: 2016, videoId: "b8m9zhNAgKs", description: "Everyone froze in place to Black Beatles in the viral challenge that swept YouTube and social media." },
       // 2017
-      { title: "Cash Me Outside How Bow Dah", artist: "Dr. Phil Show", year: 2017, videoId: "mNe8bDJda0A", description: "A defiant teen's catchphrase on Dr. Phil became one of the most quoted memes of 2017." },
-      { title: "It Is Wednesday My Dudes", artist: "Jimmy Here", year: 2017, videoId: "du-TY1GUFGk", description: "A screaming frog paired with a weekly declaration became a beloved recurring internet ritual." },
+    { title: "Cash Me Outside How Bow Dah", artist: "Dr. Phil Show", year: 2017, videoId: "mNe8bDJda0A", description: "A defiant teen's catchphrase on Dr. Phil became one of the most quoted memes of 2017." },
+    { title: "It Is Wednesday My Dudes", artist: "Jimmy Here", year: 2017, videoId: "du-TY1GUFGk", description: "A screaming frog paired with a weekly declaration became a beloved recurring internet ritual." },
+    { title: "Charlie Bit My Finger", artist: "HDCYT", year: 2017, videoId: "_OBlgSz8sSM", description: "The classic baby video hit peak legendary status as one of YouTube's most iconic viral moments." },
+    { title: "Shooting Stars Meme", artist: "Bag Raiders / Various", year: 2017, videoId: "feA64wXhbjo", description: "People launched into space to 'Shooting Stars' in the year's most creative meme format." },
+    { title: "BBC Dad — Kids Interrupt Interview", artist: "BBC News", year: 2017, videoId: "Mh4f9AYRCZY", description: "A professor's live BBC interview hilariously derailed by his toddlers became an instant classic viral moment." },
       // 2018
-      { title: "Walmart Yodeling Kid", artist: "Mason Ramsey", year: 2018, videoId: "bOZT-UpRA2Y", description: "A kid yodeling Hank Williams in Walmart charmed the internet and led to a Coachella performance." },
-      { title: "Baby Shark Dance", artist: "Pinkfong", year: 2018, videoId: "XqZsoesa55w", description: "The insanely catchy children's song eventually became the most-viewed YouTube video of all time." },
+    { title: "Walmart Yodeling Kid", artist: "Mason Ramsey", year: 2018, videoId: "bOZT-UpRA2Y", description: "A kid yodeling Hank Williams in Walmart charmed the internet and led to a Coachella performance." },
+    { title: "Baby Shark Dance", artist: "Pinkfong", year: 2018, videoId: "XqZsoesa55w", description: "The insanely catchy children's song eventually became the most-viewed YouTube video of all time." },
+    { title: "Yanny vs. Laurel", artist: "Cloe Feldman", year: 2018, videoId: "yDiXQl7grPQ", description: "An audio clip divided the entire internet over whether they heard 'Yanny' or 'Laurel.'" },
+    { title: "Is This a Pigeon?", artist: "Various meme creators", year: 2018, videoId: "fJIjoE27F-Q", description: "A 1991 anime screencap became the defining meme template for misidentifying everything in 2018." },
+    { title: "Rewind 2018 — PewDiePie Reaction", artist: "PewDiePie", year: 2018, videoId: "By_Cn5ixYLg", description: "PewDiePie's roast of YouTube Rewind 2018 became more watched than the original itself." },
       // 2019
-      { title: "Area 51 Naruto Runner", artist: "KTNV News", year: 2019, videoId: "Dhfx0bR7Zx4", description: "A man Naruto-running behind a live news reporter at Area 51 became the defining meme of the 2019 raid." },
+    { title: "Area 51 Naruto Runner", artist: "KTNV News", year: 2019, videoId: "Dhfx0bR7Zx4", description: "A man Naruto-running behind a live news reporter at Area 51 became the defining meme of the 2019 raid." },
+    { title: "PewDiePie — Congratulations", artist: "Mariah Carey", year: 2019, videoId: "PHgc8Q6qTjc", description: "Mariah used her legendary whistle register to blow the cap off in the most iconic challenge entry." },
+    { title: "Mic'd Up Mason — GoPro Kid", artist: "world_record_egg", year: 2019, videoId: "3vA6MQDgwYU", description: "A photo of an egg broke Kylie Jenner's Instagram record, then hatched into a mental health message." },
+    { title: "Lofi Girl — Beats to Relax/Study To", artist: "Pinkfong", year: 2019, videoId: "hHW1oY26kxQ", description: "Baby Shark officially dethroned Despacito as the most-viewed YouTube video in history." },
+    { title: "OK Boomer", artist: "Various creators", year: 2019, videoId: "dWNvlyycWzQ", description: "A teen's dismissive retort to older generations became the defining generational clash meme of 2019." },
       // 2020
-      { title: "Coffin Dance (Astronomia Meme)", artist: "Various compilations", year: 2020, videoId: "j9V78UbdzWI", description: "Ghanaian pallbearers dancing became the defining dark humor meme of pandemic life." },
-      { title: "Dreams — Cranberry Skateboard", artist: "Nathan Apodaca (Doggface208)", year: 2020, videoId: "lcWA2wEFkeY", description: "A man vibing on a skateboard with cranberry juice and Fleetwood Mac became a symbol of chill positivity." },
+    { title: "Coffin Dance (Astronomia Meme)", artist: "Various compilations", year: 2020, videoId: "j9V78UbdzWI", description: "Ghanaian pallbearers dancing became the defining dark humor meme of pandemic life." },
+    { title: "Dreams — Cranberry Skateboard", artist: "Nathan Apodaca (Doggface208)", year: 2020, videoId: "lcWA2wEFkeY", description: "A man vibing on a skateboard with cranberry juice and Fleetwood Mac became a symbol of chill positivity." },
+    { title: "Cat Vibing to Ievan Polkka", artist: "Bilal Göregen", year: 2020, videoId: "NUYvbT6vTPs", description: "A head-bobbing cat synced to a Turkish musician's performance became the year's most joyful meme." },
+    { title: "Baka Mitai (Dame Da Ne)", artist: "Various deepfake creators", year: 2020, videoId: "g3jCAyPai2Y", description: "Deepfake tech let anyone sing this Yakuza karaoke ballad, spawning millions of hilarious edits." },
+    { title: "Tiger King Phenomenon", artist: "Netflix / Various reactions", year: 2020, videoId: "acTdxsoa428", description: "Netflix's Tiger King became a quarantine obsession, making Joe Exotic a household name overnight." },
       // 2021
-      { title: "The Wellerman (Sea Shanty)", artist: "Nathan Evans", year: 2021, videoId: "qP-7GNoDJ5c", description: "A Scottish postal worker's shanty ignited a massive trend of harmonized duets across social media." },
-      { title: "Berries and Cream", artist: "Starburst ad (resurfaced)", year: 2021, videoId: "wYX_zhlTDr8", description: "A bizarre old Starburst commercial was rediscovered and became an inescapable TikTok trend." },
+    { title: "The Wellerman (Sea Shanty)", artist: "Nathan Evans", year: 2021, videoId: "qP-7GNoDJ5c", description: "A Scottish postal worker's shanty ignited a massive trend of harmonized duets across social media." },
+    { title: "Berries and Cream", artist: "Starburst ad (resurfaced)", year: 2021, videoId: "wYX_zhlTDr8", description: "A bizarre old Starburst commercial was rediscovered and became an inescapable TikTok trend." },
+    { title: "How Much Is Your Outfit?", artist: "Various street interviewers", year: 2021, videoId: "NaSd2d5rwPE", description: "Street fashion interview videos exploded as people showed off fits worth thousands on YouTube." },
+    { title: "MrBeast — Squid Game In Real Life", artist: "Netflix / Various recreations", year: 2021, videoId: "0e3GPea1Tyg", description: "The deadly children's game from the Netflix mega-hit inspired countless real-life recreations on YouTube." },
       // 2022
-      { title: "It's Corn!", artist: "Gregory Brothers / Recess Therapy", year: 2022, videoId: "1VbZE6YhjKk", description: "A little boy's pure enthusiasm about corn was auto-tuned into a song everyone was singing for months." },
-      { title: "Jiggle Jiggle", artist: "Duke & Jones / Louis Theroux", year: 2022, videoId: "_G1cVDy0fTg", description: "A Louis Theroux freestyle rap was remixed into one of TikTok's biggest dance trends." },
-      // 2023
-      { title: "I'm Just Ken", artist: "Ryan Gosling / Barbie Movie", year: 2023, videoId: "ru1LC9lW20Q", description: "Ryan Gosling's earnest musical number from the Barbie movie became a massive lip-sync meme." },
-      { title: "Grimace Shake Trend", artist: "Various creators", year: 2023, videoId: "0_6o90C5jcE", description: "People drank McDonald's purple Grimace Shake then cut to fake horror-movie aftermath scenes." },
+    { title: "It's Corn!", artist: "Gregory Brothers / Recess Therapy", year: 2022, videoId: "1VbZE6YhjKk", description: "A little boy's pure enthusiasm about corn was auto-tuned into a song everyone was singing for months." },
+    { title: "Jiggle Jiggle", artist: "Duke & Jones / Louis Theroux", year: 2022, videoId: "_G1cVDy0fTg", description: "A Louis Theroux freestyle rap was remixed into one of TikTok's biggest dance trends." },
+    { title: "The Backrooms (Found Footage)", artist: "Kane Pixels", year: 2022, videoId: "H4dGpz6cnHo", description: "A teen's VFX masterpiece turned a creepypasta into YouTube's most impressive horror short." },
+    { title: "Will Smith Slaps Chris Rock", artist: "Oscars / Various", year: 2022, videoId: "myjEoDypUD8", description: "The shocking Oscar slap became the most talked-about moment of 2022, spawning endless reactions." },
+    { title: "I'm Just Ken", artist: "Ryan Gosling / Barbie Movie", year: 2023, videoId: "ru1LC9lW20Q", description: "Ryan Gosling's earnest musical number from the Barbie movie became a massive lip-sync meme." },
+    { title: "Grimace Shake Trend", artist: "Various creators", year: 2023, videoId: "0_6o90C5jcE", description: "People drank McDonald's purple Grimace Shake then cut to fake horror-movie aftermath scenes." },
+    { title: "Skibidi Toilet — Season 1", artist: "DaFuq!?Boom!", year: 2023, videoId: "WePNs-G7puA", description: "Singing heads in toilets became Gen Alpha's most unhinged obsession with billions of views." },
+    { title: "Grand Theft Auto VI — Trailer 1", artist: "JAXOMY x AGATINO ROMERO", year: 2023, videoId: "QdBZY2fkU-0", description: "A raccoon spinning to an Italian dance track became the most infectious earworm meme of 2023." },
+    { title: "MrBeast — 1,000 Blind People See", artist: "Pinkydoll / Various", year: 2023, videoId: "TJ2ifmkGGus", description: "Streamers acting like video game NPCs with repetitive phrases became a bizarre viral craze." },
       // 2024
-      { title: "Hawk Tuah Girl", artist: "Tim & Dee TV / Hailey Welch", year: 2024, videoId: "C7tydu_erZo", description: "A woman's hilariously bold street interview answer became the most quoted catchphrase of summer 2024." },
+    { title: "Hawk Tuah Girl", artist: "Tim & Dee TV / Hailey Welch", year: 2024, videoId: "C7tydu_erZo", description: "A woman's hilariously bold street interview answer became the most quoted catchphrase of summer 2024." },
+    { title: "Moo Deng — Viral Baby Pygmy Hippo", artist: "Khao Kheow Open Zoo", year: 2024, videoId: "kuhsQGCPFPs", description: "A sassy pygmy hippo with rosy cheeks won Meme of the Year and captured millions of hearts." },
+    { title: "Mark Rober — Why MRIs Are Dangerous", artist: "Various clips", year: 2024, videoId: "X_rh2S74UJs", description: "A pee-wee football player's obsession with LSU gymnast Livvy Dunne became an absurd viral saga." },
+    { title: "MrBeast — 30 Celebrities Fight", artist: "Various creators", year: 2024, videoId: "QJI0an6irrA", description: "Calling the virtual dog and getting his grumpy responses became an inexplicably hilarious meme trend." },
+    { title: "MrBeast — Survive 30 Days In The Sky", artist: "IShowSpeed", year: 2024, videoId: "ZFoNBxpXen4", description: "Speed's chaotic meeting with Messi—while sporting a Ronaldo tattoo—was peak internet chaos." },
+      // 2025
+    { title: "MrBeast — Flip a Coin, Win $30K", artist: "Various creators", year: 2025, videoId: "_sBRk9ADpK8", description: "ChatGPT's image update let everyone transform their photos into Studio Ghibli-style art." },
+    { title: "Mark Rober — Disney Ghost Secret", artist: "Various food creators", year: 2025, videoId: "c4dH8MpXYH4", description: "Luxury pistachio chocolate bars became the year's most obsessed-over food trend." },
+    { title: "Mark Rober — Why Weatherman Is Wrong", artist: "Various clips", year: 2025, videoId: "lSDoCbQsKxY", description: "A couple on Coldplay's kiss cam who pulled away sparked hilarious worldwide speculation." },
+    { title: "Mark Rober — How Close To Beat Robot?", artist: "MrBeast", year: 2025, videoId: "qsJgJjOG5tY", description: "MrBeast's Shorts clip dethroned Despacito as the most-liked YouTube video with 55+ million likes." },
+    { title: "MrBeast \u2014 \$1 vs \$1B Futuristic Tech", artist: "MrBeast", year: 2025, videoId: "pAnGwRiQ4-4", description: "MrBeast compares a \$1 item to \$1 billion futuristic technology in viral YouTube challenge." },
     ];
 
     // ============ STATE ============
@@ -674,18 +803,24 @@
         if (grouped[v.year]) grouped[v.year].push(v);
       });
 
+      const arrowClass = catClass === 'music' ? 'music-arrow' : 'funny-arrow';
       main.innerHTML = years.map(year => {
         const vids = grouped[year];
         if (vids.length === 0) return '';
         const labelText = currentCategory === 'music' ? 'Viral Music' : 'Viral Memes & Funny';
+        const rowId = `row-${year}`;
         return `
           <section class="year-section fade-in" id="year-${year}">
             <div class="year-header">
               <h2 class="${catClass}-accent">${year}</h2>
               <span class="year-label">${labelText}</span>
             </div>
-            <div class="video-grid">
-              ${vids.map(v => videoCard(v, catClass)).join('')}
+            <div class="video-row-wrapper">
+              <button class="scroll-arrow scroll-arrow-left ${arrowClass}" data-row="${rowId}" onclick="scrollRow('${rowId}', -1)" aria-label="Scroll left">&#8249;</button>
+              <div class="video-row" id="${rowId}">
+                ${vids.map(v => videoCard(v, catClass)).join('')}
+              </div>
+              <button class="scroll-arrow scroll-arrow-right ${arrowClass} visible" data-row="${rowId}" onclick="scrollRow('${rowId}', 1)" aria-label="Scroll right">&#8250;</button>
             </div>
           </section>
         `;
@@ -696,6 +831,8 @@
         document.querySelectorAll('.fade-in').forEach((el, i) => {
           setTimeout(() => el.classList.add('visible'), i * 80);
         });
+        // Setup scroll arrow visibility after render
+        setTimeout(setupScrollListeners, 100);
       });
     }
 
@@ -769,6 +906,36 @@
     function setupKeyboard() {
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeLightbox();
+      });
+    }
+
+    // ============ HORIZONTAL SCROLL ============
+    function scrollRow(rowId, direction) {
+      const row = document.getElementById(rowId);
+      if (!row) return;
+      const scrollAmount = 360;
+      row.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+
+    function updateScrollArrows(row) {
+      const wrapper = row.closest('.video-row-wrapper');
+      if (!wrapper) return;
+      const leftArrow = wrapper.querySelector('.scroll-arrow-left');
+      const rightArrow = wrapper.querySelector('.scroll-arrow-right');
+      if (leftArrow) {
+        leftArrow.classList.toggle('visible', row.scrollLeft > 10);
+      }
+      if (rightArrow) {
+        const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 10;
+        rightArrow.classList.toggle('visible', !atEnd);
+      }
+    }
+
+    function setupScrollListeners() {
+      document.querySelectorAll('.video-row').forEach(row => {
+        row.addEventListener('scroll', () => updateScrollArrows(row), { passive: true });
+        // Initial check
+        updateScrollArrows(row);
       });
     }
 

@@ -257,13 +257,48 @@
       position: relative;
     }
 
+    /* Fade edges to hint at more content */
+    .video-row-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: calc(100% - 8px);
+      background: linear-gradient(to right, transparent, var(--bg));
+      pointer-events: none;
+      z-index: 5;
+      transition: opacity 0.3s ease;
+    }
+    .video-row-wrapper.at-end::after {
+      opacity: 0;
+    }
+    .video-row-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60px;
+      height: calc(100% - 8px);
+      background: linear-gradient(to left, transparent, var(--bg));
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .video-row-wrapper.has-scroll-left::before {
+      opacity: 1;
+    }
+
     .video-row {
       display: flex;
       gap: 20px;
       overflow-x: auto;
       scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
       scrollbar-width: none;
       padding-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .video-row::-webkit-scrollbar { display: none; }
@@ -271,6 +306,34 @@
     .video-row .video-card {
       flex: 0 0 340px;
       min-width: 340px;
+      scroll-snap-align: start;
+    }
+
+    /* Scroll progress dots */
+    .scroll-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 0 4px;
+    }
+    .scroll-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s ease;
+    }
+    .scroll-dot.active {
+      width: 24px;
+      border-radius: 4px;
+    }
+    .scroll-dot.active.music-dot {
+      background: var(--music);
+      box-shadow: 0 0 8px var(--music-glow);
+    }
+    .scroll-dot.active.funny-dot {
+      background: var(--funny);
+      box-shadow: 0 0 8px var(--funny-glow);
     }
 
     .scroll-arrow {
@@ -301,6 +364,15 @@
       pointer-events: all;
     }
 
+    /* Pulse animation to draw attention on first load */
+    @keyframes arrowPulse {
+      0%, 100% { transform: translateY(-60%) scale(1); }
+      50% { transform: translateY(-60%) scale(1.15); }
+    }
+    .scroll-arrow.hint {
+      animation: arrowPulse 1.2s ease-in-out 2;
+    }
+
     .scroll-arrow:hover {
       background: var(--surface-hover);
       border-color: #2a2a3e;
@@ -325,12 +397,15 @@
       right: -12px;
     }
 
+    /* Mobile: smaller cards, touch-friendly, show dots */
     @media (max-width: 480px) {
       .video-row .video-card {
-        flex: 0 0 300px;
-        min-width: 300px;
+        flex: 0 0 280px;
+        min-width: 280px;
       }
       .scroll-arrow { display: none; }
+      .video-row-wrapper::after { width: 40px; }
+      .video-row-wrapper::before { width: 40px; }
     }
 
     /* ============ VIDEO CARD ============ */
@@ -556,9 +631,16 @@
       .hero p { font-size: 1rem; }
       .year-header h2 { font-size: 2.2rem; }
       .video-row { gap: 14px; }
+      .video-row .video-card {
+        flex: 0 0 300px;
+        min-width: 300px;
+      }
       .card-info { padding: 12px 16px; }
       .timeline-inner { padding: 0 12px; }
       .year-btn { padding: 8px 12px; font-size: 0.85rem; }
+      .scroll-dots { gap: 5px; }
+      .scroll-dot { width: 6px; height: 6px; }
+      .scroll-dot.active { width: 20px; }
     }
   </style>
 </head>
@@ -804,6 +886,7 @@
       });
 
       const arrowClass = catClass === 'music' ? 'music-arrow' : 'funny-arrow';
+      const dotClass = catClass === 'music' ? 'music-dot' : 'funny-dot';
       main.innerHTML = years.map(year => {
         const vids = grouped[year];
         if (vids.length === 0) return '';
@@ -815,12 +898,15 @@
               <h2 class="${catClass}-accent">${year}</h2>
               <span class="year-label">${labelText}</span>
             </div>
-            <div class="video-row-wrapper">
+            <div class="video-row-wrapper" id="wrapper-${rowId}">
               <button class="scroll-arrow scroll-arrow-left ${arrowClass}" data-row="${rowId}" onclick="scrollRow('${rowId}', -1)" aria-label="Scroll left">&#8249;</button>
               <div class="video-row" id="${rowId}">
                 ${vids.map(v => videoCard(v, catClass)).join('')}
               </div>
               <button class="scroll-arrow scroll-arrow-right ${arrowClass} visible" data-row="${rowId}" onclick="scrollRow('${rowId}', 1)" aria-label="Scroll right">&#8250;</button>
+            </div>
+            <div class="scroll-dots" id="dots-${rowId}">
+              ${vids.map((_, i) => `<div class="scroll-dot ${i === 0 ? 'active ' + dotClass : ''}" data-index="${i}"></div>`).join('')}
             </div>
           </section>
         `;
@@ -832,7 +918,15 @@
           setTimeout(() => el.classList.add('visible'), i * 80);
         });
         // Setup scroll arrow visibility after render
-        setTimeout(setupScrollListeners, 100);
+        setTimeout(() => {
+          setupScrollListeners();
+          // Pulse the first visible right arrow to hint at scrolling
+          const firstArrow = document.querySelector('.scroll-arrow-right.visible');
+          if (firstArrow) {
+            firstArrow.classList.add('hint');
+            firstArrow.addEventListener('animationend', () => firstArrow.classList.remove('hint'), { once: true });
+          }
+        }, 100);
       });
     }
 
@@ -913,29 +1007,53 @@
     function scrollRow(rowId, direction) {
       const row = document.getElementById(rowId);
       if (!row) return;
-      const scrollAmount = 360;
-      row.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+      const cardWidth = row.querySelector('.video-card')?.offsetWidth || 340;
+      const gap = 20;
+      row.scrollBy({ left: direction * (cardWidth + gap), behavior: 'smooth' });
     }
 
-    function updateScrollArrows(row) {
+    function updateScrollState(row) {
       const wrapper = row.closest('.video-row-wrapper');
       if (!wrapper) return;
       const leftArrow = wrapper.querySelector('.scroll-arrow-left');
       const rightArrow = wrapper.querySelector('.scroll-arrow-right');
-      if (leftArrow) {
-        leftArrow.classList.toggle('visible', row.scrollLeft > 10);
-      }
-      if (rightArrow) {
-        const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 10;
-        rightArrow.classList.toggle('visible', !atEnd);
+      const hasLeft = row.scrollLeft > 10;
+      const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 10;
+
+      if (leftArrow) leftArrow.classList.toggle('visible', hasLeft);
+      if (rightArrow) rightArrow.classList.toggle('visible', !atEnd);
+
+      // Update wrapper fade classes
+      wrapper.classList.toggle('has-scroll-left', hasLeft);
+      wrapper.classList.toggle('at-end', atEnd);
+
+      // Update dots
+      const dotsContainer = document.getElementById('dots-' + row.id);
+      if (dotsContainer) {
+        const cards = row.querySelectorAll('.video-card');
+        const dots = dotsContainer.querySelectorAll('.scroll-dot');
+        const cardWidth = cards[0]?.offsetWidth || 340;
+        const gap = 20;
+        const activeIndex = Math.round(row.scrollLeft / (cardWidth + gap));
+        dots.forEach((dot, i) => {
+          const isActive = i === Math.min(activeIndex, dots.length - 1);
+          dot.classList.toggle('active', isActive);
+          // Keep the category color class on active dots
+          if (isActive) {
+            const catDot = currentCategory === 'music' ? 'music-dot' : 'funny-dot';
+            dot.classList.add(catDot);
+          } else {
+            dot.classList.remove('music-dot', 'funny-dot');
+          }
+        });
       }
     }
 
     function setupScrollListeners() {
       document.querySelectorAll('.video-row').forEach(row => {
-        row.addEventListener('scroll', () => updateScrollArrows(row), { passive: true });
-        // Initial check
-        updateScrollArrows(row);
+        row.addEventListener('scroll', () => updateScrollState(row), { passive: true });
+        // Initial state
+        updateScrollState(row);
       });
     }
 

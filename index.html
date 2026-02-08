@@ -640,69 +640,134 @@
   <script>
     // ============ VIDEO DATA ============
     const musicVideos = [
+      // 2013
+      { title: "Thrift Shop", artist: "Macklemore & Ryan Lewis", year: 2013, videoId: "QK8mJJJvaes", description: "An indie-rap anthem about thrift store finds that hit #1 and became inescapable in 2013." },
+      { title: "Wrecking Ball", artist: "Miley Cyrus", year: 2013, videoId: "My2FRPA3Gf8", description: "Miley's explosive video broke VEVO records and marked her dramatic transformation from Disney star." },
+      { title: "Royals", artist: "Lorde", year: 2013, videoId: "nlcIKh6sBtc", description: "A 16-year-old from New Zealand topped global charts with this anti-materialism anthem." },
+      { title: "Roar", artist: "Katy Perry", year: 2013, videoId: "CevxZvSJLk8", description: "Katy Perry's empowerment anthem spent 4 weeks at #1 and crossed 3 billion YouTube views." },
+      { title: "Blurred Lines", artist: "Robin Thicke ft. T.I. & Pharrell", year: 2013, videoId: "yyDUC1LUXSU", description: "The most controversial hit of 2013 — dominated charts despite sparking massive cultural debate." },
+      { title: "Get Lucky", artist: "Daft Punk ft. Pharrell", year: 2013, videoId: "5NV6Rdv1a3I", description: "Daft Punk's disco-funk comeback won Record of the Year and became the summer anthem of 2013." },
+      { title: "Can't Hold Us", artist: "Macklemore & Ryan Lewis", year: 2013, videoId: "2zNSgSzhBfM", description: "An explosive anthem that became the second #1 for the indie-rap duo in 2013." },
+      { title: "Harlem Shake", artist: "Baauer", year: 2013, videoId: "qV0LHCHf-pE", description: "The 30-second meme format spawned over 40,000 YouTube videos and topped the Hot 100." },
+      // 2014
+      { title: "Happy", artist: "Pharrell Williams", year: 2014, videoId: "ZbZSe6N_BXs", description: "The Despicable Me 2 anthem became a global singalong and won an Oscar nomination." },
+      { title: "Shake It Off", artist: "Taylor Swift", year: 2014, videoId: "nfWlot6h_JM", description: "Taylor's pop reinvention anthem spent 4 weeks at #1 and defined her 1989 era." },
+      { title: "Chandelier", artist: "Sia", year: 2014, videoId: "2vjPBrBU-TM", description: "Maddie Ziegler's mesmerizing dance performance made this one of the decade's most iconic videos." },
+      { title: "All About That Bass", artist: "Meghan Trainor", year: 2014, videoId: "7PCkvCPvDXk", description: "A body-positive debut single that spent 8 weeks at #1 and launched a new pop career." },
+      { title: "Anaconda", artist: "Nicki Minaj", year: 2014, videoId: "LDZX4ooRsWs", description: "Nicki broke the internet with this video, setting VEVO's 24-hour viewing record at the time." },
+      { title: "Fancy", artist: "Iggy Azalea ft. Charli XCX", year: 2014, videoId: "O-zpOMYRi0w", description: "Spent 7 weeks at #1 and was named the Song of the Summer 2014 by Billboard." },
+      { title: "Bang Bang", artist: "Jessie J, Ariana Grande & Nicki Minaj", year: 2014, videoId: "0HDdjwpPM3Y", description: "A powerhouse trio collab that debuted at #6 and became a defining pop anthem of 2014." },
+      { title: "Turn Down for What", artist: "DJ Snake & Lil Jon", year: 2014, videoId: "HMUDVMiITOU", description: "The bass-heavy anthem and its chaotic video became 2014's ultimate party starter." },
+      // 2015
+      { title: "Uptown Funk", artist: "Mark Ronson ft. Bruno Mars", year: 2015, videoId: "OPf0YbXqDm0", description: "Spent 14 weeks at #1 and became one of the best-selling singles of all time." },
+      { title: "See You Again", artist: "Wiz Khalifa ft. Charlie Puth", year: 2015, videoId: "RgKAFK5djSk", description: "The emotional Furious 7 tribute briefly became the most-viewed YouTube video ever." },
+      { title: "Hello", artist: "Adele", year: 2015, videoId: "YQHsXMglC9A", description: "Adele shattered records with 27.7 million views in 24 hours and a historic #1 debut." },
+      { title: "Hotline Bling", artist: "Drake", year: 2015, videoId: "uxpDa-c-4Mc", description: "Drake's awkward dance moves spawned a million memes and made this an iconic cultural moment." },
+      { title: "Watch Me (Whip/Nae Nae)", artist: "Silento", year: 2015, videoId: "vjW8wmF5VWc", description: "The viral dance craze that had everyone doing the Whip and Nae Nae all summer long." },
+      { title: "Bad Blood", artist: "Taylor Swift ft. Kendrick Lamar", year: 2015, videoId: "QcIy9NiNbmo", description: "A star-studded revenge video featuring nearly every celebrity in Hollywood." },
+      { title: "Lean On", artist: "Major Lazer & DJ Snake ft. MO", year: 2015, videoId: "YqeW9_5kURI", description: "Became the most-streamed song on Spotify in 2015 with its infectious global sound." },
+      { title: "What Do You Mean?", artist: "Justin Bieber", year: 2015, videoId: "DK_0jXPuIr0", description: "Bieber's massive comeback single debuted at #1 and marked his triumphant return to pop." },
       // 2016
       { title: "Sorry", artist: "Justin Bieber", year: 2016, videoId: "fRh_vgS2dFE", description: "The dance-crew music video and catchy hook made it one of the most-streamed songs of 2016." },
       { title: "Closer", artist: "The Chainsmokers ft. Halsey", year: 2016, videoId: "PT2_F-1esPk", description: "Spent 12 weeks at #1, becoming the defining EDM-pop crossover anthem of 2016." },
       { title: "Work", artist: "Rihanna ft. Drake", year: 2016, videoId: "HL1UzIK-flA", description: "Rihanna and Drake's steamy collab hit #1 and racked up over 1.4 billion YouTube views." },
       { title: "Panda", artist: "Desiigner", year: 2016, videoId: "E5ONTXHS2mM", description: "A SoundCloud phenomenon that hit #1, instantly becoming one of hip-hop's most quoted hooks." },
       { title: "Cheap Thrills", artist: "Sia ft. Sean Paul", year: 2016, videoId: "nYh-n7EOtMA", description: "Topped charts in 20+ countries and became one of 2016's most-viewed videos globally." },
+      { title: "Stressed Out", artist: "Twenty One Pilots", year: 2016, videoId: "pXRviuL6vMY", description: "The alternative duo's breakthrough hit spent months on charts and became a Gen Z anthem." },
+      { title: "Don't Let Me Down", artist: "The Chainsmokers ft. Daya", year: 2016, videoId: "Io0fBr1XBUA", description: "Won a Grammy for Best Dance Recording and cemented The Chainsmokers' 2016 dominance." },
       // 2017
       { title: "Despacito", artist: "Luis Fonsi ft. Daddy Yankee", year: 2017, videoId: "kJQP7kiw5Fk", description: "First YouTube video to reach 5 billion views, igniting a global Latin music wave." },
       { title: "Shape of You", artist: "Ed Sheeran", year: 2017, videoId: "JGwWNGJdvx8", description: "Broke Spotify streaming records and became the inescapable pop earworm of 2017." },
       { title: "HUMBLE.", artist: "Kendrick Lamar", year: 2017, videoId: "tvTRZJ-4EyI", description: "Its striking visuals helped Kendrick dominate 2017 and cross a billion YouTube views." },
       { title: "Havana", artist: "Camila Cabello ft. Young Thug", year: 2017, videoId: "BQ0mxQXmLsk", description: "The catchy Latin-pop hit propelled Camila Cabello from Fifth Harmony breakout to solo superstar." },
       { title: "Look What You Made Me Do", artist: "Taylor Swift", year: 2017, videoId: "3tmd-ClpJxA", description: "Its revenge-themed video broke YouTube's 24-hour record with 43 million views on day one." },
+      { title: "Believer", artist: "Imagine Dragons", year: 2017, videoId: "7wtfhZwyrcc", description: "A hard-hitting anthem that became one of the most-used songs in movie trailers and sports events." },
+      { title: "Rockstar", artist: "Post Malone ft. 21 Savage", year: 2017, videoId: "UceaB4D0jpo", description: "Spent 8 weeks at #1 and established Post Malone as one of music's biggest new stars." },
       // 2018
       { title: "This Is America", artist: "Childish Gambino", year: 2018, videoId: "VYOjWnS4cMY", description: "Symbolism-laden video sparked massive cultural debate about gun violence in America." },
       { title: "God's Plan", artist: "Drake", year: 2018, videoId: "xpVfcZ0ZcFM", description: "Drake gave away nearly $1 million in the video, making it a feel-good viral sensation." },
       { title: "In My Feelings", artist: "Drake", year: 2018, videoId: "DRS_PpOrUZ4", description: "Sparked the massive 'Kiki Challenge' that had millions dancing alongside moving cars." },
       { title: "Thank U, Next", artist: "Ariana Grande", year: 2018, videoId: "gl1aHhXnN1k", description: "Broke YouTube's record for biggest music video premiere with 55 million views in 24 hours." },
       { title: "SAD!", artist: "XXXTENTACION", year: 2018, videoId: "pgN-vvVVxMA", description: "Posthumously hit #1 after the rapper's tragic death, fueling 1.5 billion YouTube views." },
+      { title: "SICKO MODE", artist: "Travis Scott", year: 2018, videoId: "6ONRf7h3Mdk", description: "The genre-bending epic with multiple beat switches became hip-hop's most ambitious hit of 2018." },
+      { title: "I Like It", artist: "Cardi B ft. Bad Bunny & J Balvin", year: 2018, videoId: "xTlNMmZKwpA", description: "A Latin trap-meets-pop fusion that became Cardi B's second #1 and a cultural crossover smash." },
       // 2019
       { title: "Old Town Road", artist: "Lil Nas X ft. Billy Ray Cyrus", year: 2019, videoId: "w2Ov5jzm3j8", description: "Broke the record for longest-running #1 hit at 19 weeks, fueled by TikTok virality." },
       { title: "Bad Guy", artist: "Billie Eilish", year: 2019, videoId: "DyDfgMOUjCI", description: "Made 17-year-old Billie Eilish a generational icon with its quirky, offbeat style." },
       { title: "Señorita", artist: "Shawn Mendes & Camila Cabello", year: 2019, videoId: "Pkh8UtuejGw", description: "Their steamy collab dominated the summer and surpassed a billion YouTube views." },
       { title: "7 Rings", artist: "Ariana Grande", year: 2019, videoId: "QYh6mYIJG2Y", description: "A flex anthem sampling 'My Favorite Things' that debuted at #1 and defined pop excess." },
       { title: "Sunflower", artist: "Post Malone & Swae Lee", year: 2019, videoId: "ApXoWvfEYVU", description: "The Spider-Verse soundtrack hit crossed 2 billion views and became Post Malone's signature song." },
+      { title: "Sucker", artist: "Jonas Brothers", year: 2019, videoId: "ru0K8uYEZWw", description: "The Jonas Brothers' surprise reunion single debuted at #1 and launched one of pop's biggest comebacks." },
+      { title: "Circles", artist: "Post Malone", year: 2019, videoId: "wXhTHyIgQ_U", description: "A genre-blending pop-rock hit that spent 39 weeks in the top 10, the longest run in Hot 100 history." },
       // 2020
       { title: "Blinding Lights", artist: "The Weeknd", year: 2020, videoId: "4NRXx6U8ABQ", description: "Spawned a massive TikTok dance challenge and became the #1 Billboard Hot 100 song of all time." },
       { title: "WAP", artist: "Cardi B ft. Megan Thee Stallion", year: 2020, videoId: "hsm4poTWjMs", description: "Generated enormous cultural debate while dominating TikTok challenges and streaming charts." },
       { title: "The Box", artist: "Roddy Ricch", year: 2020, videoId: "fHI8X4OXluQ", description: "Spent 11 weeks at #1 driven by TikTok's viral 'eee er' beat drop meme." },
       { title: "Dynamite", artist: "BTS", year: 2020, videoId: "gdZLi9oWNZg", description: "BTS's first all-English hit broke YouTube's 24-hour premiere record with 101 million views." },
       { title: "Rockstar", artist: "DaBaby ft. Roddy Ricch", year: 2020, videoId: "mxFstYSbBmc", description: "Spent 7 weeks at #1 and became a protest anthem after its Black Lives Matter remix." },
+      { title: "Watermelon Sugar", artist: "Harry Styles", year: 2020, videoId: "E07s5ZYygMg", description: "Won a Grammy for Best Pop Solo Performance and became the sun-soaked anthem of 2020." },
+      { title: "Mood", artist: "24kGoldn ft. iann dior", year: 2020, videoId: "GrAchTdepsU", description: "A TikTok-fueled hit that spent 8 weeks at #1 and defined the pop-punk rap crossover." },
       // 2021
       { title: "MONTERO (Call Me By Your Name)", artist: "Lil Nas X", year: 2021, videoId: "6swmTBVI83k", description: "Its provocative video ignited a cultural firestorm while debuting at #1 on the Hot 100." },
       { title: "drivers license", artist: "Olivia Rodrigo", year: 2021, videoId: "ZmDBbnmKpqQ", description: "Broke Spotify's single-day streaming record, fueled by Disney+ love triangle speculation." },
       { title: "Stay", artist: "The Kid LAROI & Justin Bieber", year: 2021, videoId: "kTJczUoc26U", description: "Hit #1 in over 30 countries and became the fastest music video to reach a billion views." },
       { title: "INDUSTRY BABY", artist: "Lil Nas X ft. Jack Harlow", year: 2021, videoId: "UTHLKHL_whs", description: "Its audacious prison-break video sparked a cultural moment and debuted at #2." },
       { title: "Easy On Me", artist: "Adele", year: 2021, videoId: "U3ASj1L6_sY", description: "Adele's long-awaited comeback shattered streaming records and dominated charts worldwide." },
+      { title: "Kiss Me More", artist: "Doja Cat ft. SZA", year: 2021, videoId: "0EVVKs6DQLo", description: "A smooth summer anthem that peaked at #3 and earned a Grammy for Best Pop Duo performance." },
+      { title: "Peaches", artist: "Justin Bieber ft. Daniel Caesar & Giveon", year: 2021, videoId: "IHNzOHi8sJs", description: "Debuted at #1 and became Bieber's seventh chart-topper with its smooth R&B groove." },
       // 2022
       { title: "As It Was", artist: "Harry Styles", year: 2022, videoId: "H5v3kku4y6Q", description: "Spent 15 weeks at #1 and became the global #1 song of 2022." },
       { title: "Unholy", artist: "Sam Smith ft. Kim Petras", year: 2022, videoId: "Uq9gPaIzbe8", description: "Went massively viral on TikTok before release — Kim Petras became the first trans woman to hit #1." },
       { title: "About Damn Time", artist: "Lizzo", year: 2022, videoId: "IXXxciRUMzE", description: "Lizzo's dance-inducing anthem spawned a viral TikTok challenge and hit #1 on the Hot 100." },
       { title: "Anti-Hero", artist: "Taylor Swift", year: 2022, videoId: "b1kbLwvqugk", description: "Broke Spotify's single-day streaming record and spent 8 weeks at #1 on the Hot 100." },
       { title: "Heat Waves", artist: "Glass Animals", year: 2022, videoId: "mRD0-GxqHVo", description: "After going viral on TikTok for two years, it finally hit #1 in 2022 in a historic slow burn." },
+      { title: "Running Up That Hill", artist: "Kate Bush", year: 2022, videoId: "wp43OdtAAkM", description: "Stranger Things catapulted this 1985 classic to #1 in the UK and #4 on the Hot 100, 37 years later." },
+      { title: "I Ain't Worried", artist: "OneRepublic", year: 2022, videoId: "mNEUkkoUoIA", description: "The Top Gun: Maverick anthem became a feel-good summer hit and viral TikTok soundtrack." },
       // 2023
       { title: "Flowers", artist: "Miley Cyrus", year: 2023, videoId: "G7KNmW9a75Y", description: "Broke the Spotify single-week streaming record as a post-breakup empowerment anthem." },
       { title: "Kill Bill", artist: "SZA", year: 2023, videoId: "MSRcC626prw", description: "Dominated TikTok with its murderous revenge fantasy hook, propelling SZA to superstardom." },
       { title: "Cruel Summer", artist: "Taylor Swift", year: 2023, videoId: "ic8j13piAhQ", description: "Originally from 2019, it finally hit #1 in 2023 after exploding on the Eras Tour and TikTok." },
       { title: "vampire", artist: "Olivia Rodrigo", year: 2023, videoId: "RlPNh_PBZb4", description: "Debuted at #1 and proved Rodrigo's staying power with a gothic pop-rock anthem." },
       { title: "Paint The Town Red", artist: "Doja Cat", year: 2023, videoId: "m4_9TFeMfJE", description: "Doja Cat reinvented herself with a devilish visual that spent two weeks at #1." },
+      { title: "greedy", artist: "Tate McRae", year: 2023, videoId: "To4SWGZkEPk", description: "A slinky pop-dance anthem filmed in a hockey rink that became TikTok's most-used sound for months." },
+      { title: "Last Night", artist: "Morgan Wallen", year: 2023, videoId: "bUjPPBxbQrQ", description: "Spent 16 weeks at #1, becoming the longest-running country chart-topper in Hot 100 history." },
+      { title: "What Was I Made For?", artist: "Billie Eilish", year: 2023, videoId: "cW8VLC9nnTo", description: "The haunting Barbie ballad won Best Song Written for Visual Media and an Oscar." },
       // 2024
       { title: "Espresso", artist: "Sabrina Carpenter", year: 2024, videoId: "eVli-tstM5E", description: "The inescapable song of summer 2024, catapulting Sabrina Carpenter to global pop stardom via TikTok." },
       { title: "Not Like Us", artist: "Kendrick Lamar", year: 2024, videoId: "H58vbez_m4E", description: "The knockout blow in the Kendrick vs. Drake beef dominated discourse and charts throughout 2024." },
       { title: "Beautiful Things", artist: "Benson Boone", year: 2024, videoId: "Oa_RSwwpPaA", description: "A breakout viral hit approaching a billion views, making Benson Boone a household name." },
       { title: "A Bar Song (Tipsy)", artist: "Shaboozey", year: 2024, videoId: "t7bQwwqW-Hc", description: "Tied 'Old Town Road' for the longest-running #1 in Hot 100 history at 19 weeks." },
       { title: "TEXAS HOLD 'EM", artist: "Beyonce", year: 2024, videoId: "238Z4YaAr1g", description: "Beyonce's surprise country pivot broke the internet and debuted at #1 on Hot 100." },
+      { title: "MILLION DOLLAR BABY", artist: "Tommy Richman", year: 2024, videoId: "bUX8MDNQda4", description: "A TikTok-viral falsetto anthem that catapulted the unknown artist to a #2 Hot 100 debut." },
+      { title: "Fortnight", artist: "Taylor Swift ft. Post Malone", year: 2024, videoId: "q3zqJs7JUCQ", description: "The lead single from The Tortured Poets Department debuted at #1 with a cinematic music video." },
       // 2025
       { title: "Die With a Smile", artist: "Lady Gaga & Bruno Mars", year: 2025, videoId: "kPa7bsKwL-c", description: "Topped YouTube's 2025 year-end list and hit 1 billion views in just 256 days." },
       { title: "APT.", artist: "ROSÉ & Bruno Mars", year: 2025, videoId: "ekr2nIex040", description: "Became the fastest K-pop video to reach 1 billion views, unseating Gangnam Style." },
       { title: "Taste", artist: "Sabrina Carpenter", year: 2025, videoId: "KEG7b851Ric", description: "Jenna Ortega cameo drove massive buzz, cementing Carpenter's pop dominance into 2025." },
       { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", year: 2025, videoId: "V9PVRfjEBTI", description: "Became Eilish's biggest streaming hit, dominating charts and TikTok into early 2025." },
       { title: "Luther", artist: "Kendrick Lamar & SZA", year: 2025, videoId: "sNY_2TEmzho", description: "The GNX lead single reunited two icons and dominated every streaming platform." },
+      { title: "That's So True", artist: "Gracie Abrams", year: 2025, videoId: "BDHM8cyJQa8", description: "A viral heartbreak anthem that topped charts worldwide and became the defining breakout hit of 2025." },
+      { title: "Diet Pepsi", artist: "Addison Rae", year: 2025, videoId: "Hki6RqI-eMA", description: "A sultry debut single that proved Addison Rae's transformation from TikTok star to pop artist." },
     ];
 
     const funnyVideos = [
+      // 2013
+      { title: "What Does The Fox Say?", artist: "Ylvis / TV Norge", year: 2013, videoId: "jofNR_WkoCE", description: "A Norwegian comedy duo's absurd music video became an unexpected global hit with 1 billion+ views." },
+      { title: "Harlem Shake (Original)", artist: "DizastaMusic / Filthy Frank", year: 2013, videoId: "8vJiSSAMNWw", description: "The original video that launched over 40,000 Harlem Shake imitations and dominated YouTube for weeks." },
+      { title: "How Animals Eat Their Food", artist: "MisterEpicMann", year: 2013, videoId: "qnydFmqHuVo", description: "Two friends acting out how animals eat became one of 2013's most-watched comedy sketches." },
+      { title: "Charlie the Unicorn", artist: "FilmCow / Jason Steele", year: 2013, videoId: "CsGYh8AacgY", description: "The absurd animated classic remained a beloved internet staple and a defining piece of YouTube humor." },
+      { title: "Doge Adventure", artist: "MrWeebl / Weebl's Stuff", year: 2013, videoId: "sd4bqmP_460", description: "An animated tribute to the iconic Doge meme that defined internet humor in late 2013." },
+      // 2014
+      { title: "Celebrity Ice Bucket Challenge", artist: "Shine On Media", year: 2014, videoId: "qgqsgXSJ7g8", description: "38 celebrities dumping ice on themselves for ALS became the biggest viral charity challenge ever." },
+      { title: "Too Many Cooks", artist: "Adult Swim", year: 2014, videoId: "QrGrOK8oZG8", description: "A deranged 11-minute sitcom parody aired at 4am on Adult Swim and became a viral masterpiece." },
+      { title: "First Kiss", artist: "Tatia Pilieva", year: 2014, videoId: "IpbDHxCV29A", description: "Strangers kissing for the first time on camera captivated the internet with raw, awkward intimacy." },
+      { title: "Devil Baby Attack", artist: "DidThatJustHappen", year: 2014, videoId: "PUKMUZ4tlJg", description: "A demonic animatronic baby terrorizing NYC pedestrians became a legendary viral prank video." },
+      // 2015
+      { title: "Pizza Rat", artist: "Matt Little", year: 2015, videoId: "UPXUG8q4jKU", description: "A determined NYC rat dragging a pizza slice down subway stairs became an instant folk hero." },
+      { title: "What Are Those?!", artist: "Top Vines / Young Busco", year: 2015, videoId: "HNtz05bhI1k", description: "A man roasting a police officer's shoes spawned one of the most quoted catchphrases of 2015." },
+      { title: "Left Shark", artist: "Katy Perry / Super Bowl XLIX", year: 2015, videoId: "WmcWZ2Bzoho", description: "The hilariously off-beat backup dancer during Katy Perry's halftime show became an instant legend." },
+      { title: "Peanut Butter Baby", artist: "VEXIA", year: 2015, videoId: "BQNTBciW9VM", description: "A baby completely covered in peanut butter became one of the internet's most adorable viral moments." },
+      { title: "John Cena Prank Call", artist: "The Prankie Show", year: 2015, videoId: "wRRsXxE1KVY", description: "Unexpected John Cena prank calls spawned a meme format that echoed across the internet for years." },
       // 2016
     { title: "Damn, Daniel", artist: "TheEllenShow", year: 2016, videoId: "_LUX70mXcEE", description: "A teen's repeated compliment of his friend's white Vans became an endlessly quotable catchphrase." },
     { title: "Chewbacca Mom", artist: "Candace Payne", year: 2016, videoId: "y3yRv5Jg5TI", description: "A mom's uncontrollable laughter in a Chewbacca mask became the most-watched Facebook Live ever." },
@@ -764,7 +829,7 @@
 
     // ============ STATE ============
     let currentCategory = 'music';
-    const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+    const years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
     // ============ INIT ============
     function init() {

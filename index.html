@@ -264,7 +264,6 @@
       scrollbar-width: none;
       padding: 0 0 8px;
       -webkit-overflow-scrolling: touch;
-      touch-action: pan-x;
     }
 
     .video-row::-webkit-scrollbar { display: none; }
@@ -340,33 +339,25 @@
       color: var(--text);
       font-weight: 600;
     }
-    .swipe-hint {
-      display: none;
-      margin-left: 6px;
-      opacity: 0.6;
-    }
-
-    /* ============ MOBILE SCROLL ============ */
+    /* ============ MOBILE: VERTICAL STACK ============ */
     @media (max-width: 768px) {
       .video-row {
-        scroll-snap-type: x proximity;
-        gap: 12px;
-        padding: 0 16px 8px;
+        flex-direction: column;
+        overflow-x: visible;
+        touch-action: auto;
+        gap: 14px;
+        padding: 0;
       }
       .video-row .video-card {
-        flex: 0 0 78vw;
+        flex: none;
+        width: 100%;
         min-width: 0;
-        scroll-snap-align: start;
-        touch-action: pan-x;
       }
       .video-card:hover {
         transform: none;
       }
       .scroll-arrow { display: none; }
-      .scroll-count { font-size: 0.8rem; }
-      .swipe-hint {
-        display: inline;
-      }
+      .scroll-count { display: none; }
     }
     @media (min-width: 769px) and (max-width: 1100px) {
       .video-row .video-card {
@@ -928,7 +919,7 @@
               </div>
               <button class="scroll-arrow scroll-arrow-right ${arrowClass} visible" data-row="${rowId}" onclick="scrollRow('${rowId}', 1)" aria-label="Scroll right">&#8250;</button>
             </div>
-            <div class="scroll-count" id="count-${rowId}"><span class="current">1</span> / ${vids.length}<span class="swipe-hint"> — Swipe →</span></div>
+            <div class="scroll-count" id="count-${rowId}"><span class="current">1</span> / ${vids.length}</div>
           </section>
         `;
       }).join('');
@@ -1046,9 +1037,6 @@
           const idx = Math.round(row.scrollLeft / cardW) + 1;
           const total = parseInt(row.dataset.total) || 1;
           countEl.querySelector('.current').textContent = Math.min(idx, total);
-          // Hide swipe hint after first scroll
-          const hint = countEl.querySelector('.swipe-hint');
-          if (hint && idx > 1) hint.style.display = 'none';
         }
       }
     }

@@ -339,25 +339,53 @@
       color: var(--text);
       font-weight: 600;
     }
-    /* ============ MOBILE: VERTICAL STACK ============ */
+    .mobile-dots {
+      display: none;
+    }
+    /* ============ MOBILE CAROUSEL ============ */
     @media (max-width: 768px) {
+      .video-row-wrapper {
+        overflow: hidden;
+        padding: 0 0 0 20px;
+      }
       .video-row {
-        flex-direction: column;
-        overflow-x: visible;
-        touch-action: auto;
-        gap: 14px;
+        overflow: visible;
+        gap: 0;
         padding: 0;
+        transition: transform 0.3s ease;
+        will-change: transform;
       }
       .video-row .video-card {
-        flex: none;
-        width: 100%;
+        flex: 0 0 calc(100vw - 52px);
         min-width: 0;
+        margin-right: 12px;
       }
       .video-card:hover {
         transform: none;
       }
       .scroll-arrow { display: none; }
+
+      /* Mobile dot indicators */
       .scroll-count { display: none; }
+      .mobile-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        padding: 14px 0 0;
+      }
+      .mobile-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        transition: background 0.25s, transform 0.25s;
+      }
+      .mobile-dot.active {
+        background: rgba(255,255,255,0.8);
+        transform: scale(1.3);
+      }
+      .mobile-dot.active.music-dot { background: var(--music); }
+      .mobile-dot.active.funny-dot { background: var(--funny); }
     }
     @media (min-width: 769px) and (max-width: 1100px) {
       .video-row .video-card {
@@ -920,6 +948,9 @@
               <button class="scroll-arrow scroll-arrow-right ${arrowClass} visible" data-row="${rowId}" onclick="scrollRow('${rowId}', 1)" aria-label="Scroll right">&#8250;</button>
             </div>
             <div class="scroll-count" id="count-${rowId}"><span class="current">1</span> / ${vids.length}</div>
+            <div class="mobile-dots" id="dots-${rowId}">
+              ${vids.map((_, i) => `<div class="mobile-dot ${catClass}-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></div>`).join('')}
+            </div>
           </section>
         `;
       }).join('');
@@ -1007,9 +1038,18 @@
     }
 
     // ============ HORIZONTAL SCROLL ============
+    const isMobile = () => window.innerWidth <= 768;
+
+    // Desktop: native overflow scroll with arrows
     function scrollRow(rowId, direction) {
       const row = document.getElementById(rowId);
       if (!row) return;
+      if (isMobile()) {
+        // On mobile, use carousel navigation
+        const state = row._carouselState;
+        if (state) goToSlide(row, state.current + direction);
+        return;
+      }
       const card = row.querySelector('.video-card');
       if (!card) return;
       const scrollAmount = card.offsetWidth + 16;
@@ -1017,6 +1057,7 @@
     }
 
     function updateScrollState(row) {
+      if (isMobile()) return; // mobile uses carousel, not native scroll
       const wrapper = row.closest('.video-row-wrapper');
       if (!wrapper) return;
 
@@ -1041,10 +1082,103 @@
       }
     }
 
+    // ============ MOBILE TOUCH CAROUSEL ============
+    function goToSlide(row, index) {
+      const state = row._carouselState;
+      if (!state) return;
+      const total = parseInt(row.dataset.total) || 1;
+      index = Math.max(0, Math.min(index, total - 1));
+      state.current = index;
+      const card = row.querySelector('.video-card');
+      if (!card) return;
+      const cardW = card.offsetWidth + 12; // card width + margin
+      row.style.transition = 'transform 0.3s ease';
+      row.style.transform = `translateX(${-index * cardW}px)`;
+
+      // Update dots
+      const dots = document.getElementById('dots-' + row.id);
+      if (dots) {
+        dots.querySelectorAll('.mobile-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === index);
+        });
+      }
+    }
+
+    function setupMobileCarousel(row) {
+      const total = parseInt(row.dataset.total) || 1;
+      row._carouselState = { current: 0, startX: 0, startY: 0, deltaX: 0, locked: false };
+      const state = row._carouselState;
+
+      // Reset position
+      row.style.transform = 'translateX(0)';
+
+      // Make dot taps work
+      const dots = document.getElementById('dots-' + row.id);
+      if (dots) {
+        dots.addEventListener('click', (e) => {
+          const dot = e.target.closest('.mobile-dot');
+          if (dot) goToSlide(row, parseInt(dot.dataset.index));
+        });
+      }
+
+      row.addEventListener('touchstart', (e) => {
+        state.startX = e.touches[0].clientX;
+        state.startY = e.touches[0].clientY;
+        state.deltaX = 0;
+        state.locked = false;
+        row.style.transition = 'none'; // no animation while dragging
+      }, { passive: true });
+
+      row.addEventListener('touchmove', (e) => {
+        const dx = e.touches[0].clientX - state.startX;
+        const dy = e.touches[0].clientY - state.startY;
+
+        // First significant move: decide if horizontal or vertical
+        if (!state.locked && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+          state.locked = true;
+          state.isHorizontal = Math.abs(dx) > Math.abs(dy);
+        }
+
+        if (!state.locked || !state.isHorizontal) return;
+
+        // It's a horizontal swipe — prevent vertical scroll
+        e.preventDefault();
+        state.deltaX = dx;
+        const card = row.querySelector('.video-card');
+        const cardW = card ? card.offsetWidth + 12 : 300;
+        const base = -state.current * cardW;
+        row.style.transform = `translateX(${base + dx}px)`;
+      }, { passive: false });
+
+      row.addEventListener('touchend', () => {
+        if (!state.isHorizontal) {
+          state.locked = false;
+          return;
+        }
+        // Determine if swipe was far enough (>40px or >25% of card width)
+        const card = row.querySelector('.video-card');
+        const cardW = card ? card.offsetWidth + 12 : 300;
+        const threshold = Math.min(40, cardW * 0.25);
+
+        if (state.deltaX < -threshold && state.current < total - 1) {
+          goToSlide(row, state.current + 1);
+        } else if (state.deltaX > threshold && state.current > 0) {
+          goToSlide(row, state.current - 1);
+        } else {
+          goToSlide(row, state.current); // snap back
+        }
+        state.locked = false;
+      }, { passive: true });
+    }
+
     function setupScrollListeners() {
       document.querySelectorAll('.video-row').forEach(row => {
-        row.addEventListener('scroll', () => updateScrollState(row), { passive: true });
-        updateScrollState(row);
+        if (isMobile()) {
+          setupMobileCarousel(row);
+        } else {
+          row.addEventListener('scroll', () => updateScrollState(row), { passive: true });
+          updateScrollState(row);
+        }
       });
     }
 
